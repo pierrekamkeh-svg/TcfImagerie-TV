@@ -1,0 +1,11 @@
+{
+  "name": "TcfImagerie TV",
+  "short_name": "TcfImagerie TV",
+  "description": "Imagerie au service du Seigneur",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050a11",
+  "theme_color": "#d4af37",
+  "orientation": "portrait",
+  "icons": []
+}

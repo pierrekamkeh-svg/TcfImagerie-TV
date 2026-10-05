@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Configuration de l'application -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d4af37">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <title>TcfImagerie TV</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #050a11;
+            color: white;
+            line-height: 1.6;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(5, 10, 17, 0.96);
+            border-bottom: 1px solid #26384d;
+            padding: 15px 5%;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo {
+            color: #d4af37;
+            font-size: 25px;
+            font-weight: 900;
+        }
+
+        .slogan {
+            font-size: 12px;
+            color: #aeb9c8;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: #d4af37;
+        }
+
+        .hero {
+            min-height: 430px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            background:
+                radial-gradient(circle at center, #162b45 0%, #050a11 70%);
+        }
+
+        .hero-content {
+            max-width: 850px;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 0, 0, 0.12);
+            border: 1px solid #ff3b3b;
+            color: #ff4b4b;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: red;
+            border-radius: 50%;
+            box-shadow: 0 0 12px red;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 7vw, 72px);
+            margin-bottom: 15px;
+        }
+
+        .hero h1 span {
+            color: #d4af37;
+        }
+
+        .hero p {
+            color: #b8c3d1;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 900;
+            transition: 0.25s;
+        }
+
+        .button-youtube {
+            background: #ef3340;
+            color: white;
+        }
+
+        .button-youtube:hover {
+            background: #ff4b55;
+            transform: translateY(-2px);
+        }
+
+        section {
+            padding: 70px 5%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .section-title p {
+            color: #aeb9c8;
+        }
+
+        /* DIRECT */
+
+        .direct-box {
+            background: #0c1520;
+            border: 1px solid #26384d;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.35);
+        }
+
+        .youtube-live {
+            min-height: 400px;
+            background:
+                radial-gradient(circle at center, #162b45 0%, #050a11 70%);
+        }
+
+        .youtube-preview {
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .youtube-icon {
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ff0000;
+            color: white;
+            border-radius: 18px;
+            font-size: 32px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 35px rgba(255,0,0,.25);
+        }
+
+        .youtube-preview h3 {
+            color: white;
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .youtube-preview p {
+            color: #aeb9c8;
+            margin-bottom: 22px;
+        }
+
+        .watch-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 23px;
+            border-radius: 10px;
+            background: #ef3340;
+            color: white;
+            text-decoration: none;
+            font-weight: 900;
+            transition: .25s;
+        }
+
+        .watch-button:hover {
+            background: #ff4b55;
+            transform: translateY(-2px);
+        }
+
+        /* CARTES */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: #0c1520;
+            border: 1px solid #26384d;
+            border-radius: 15px;
+            padding: 25px;
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #d4af37;
+        }
+
+        .card-icon {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #aeb9c8;
+        }
+
+        .time {
+            color: #d4af37;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        /* A PROPOS */
+
+        .about {
+            background: #080f18;
+        }
+
+        .about-content {
+            max-width: 850px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .about-content p {
+            color: #b8c3d1;
+            margin-bottom: 15px;
+        }
+
+        /* CONTACT */
+
+        .contact-box {
+            max-width: 700px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .contact-box p {
+            color: #b8c3d1;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background: #03070c;
+            border-top: 1px solid #26384d;
+            text-align: center;
+            padding: 30px 20px;
+            color: #8996a6;
+        }
+
+        footer strong {
+            color: #d4af37;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            .header-content {
+                flex-direction: column;
+            }
+
+            nav {
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                min-height: 500px;
+            }
+
+            section {
+                padding: 50px 20px;
+            }
+
+            .youtube-preview {
+                min-height: 350px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .slogan {
+                text-align: center;
+            }
+
+            nav a {
+                font-size: 12px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- MENU -->
+
+    <header>
+        <div class="header-content">
+
+            <div>
+                <div class="logo">TcfImagerie TV</div>
+                <div class="slogan">Imagerie au service du Seigneur</div>
+            </div>
+
+            <nav>
+                <a href="#accueil">Accueil</a>
+                <a href="#direct">Direct</a>
+                <a href="#programmes">Programmes</a>
+                <a href="#enseignements">Enseignements</a>
+                <a href="#annonces">Annonces</a>
+                <a href="#apropos">À propos</a>
+                <a href="#contact">Contact</a>
+            </nav>
+
+        </div>
+    </header>
+
+
+    <!-- ACCUEIL -->
+
+    <section class="hero" id="accueil">
+
+        <div class="hero-content">
+
+            <div class="live-badge">
+                <span class="live-dot"></span>
+                TcfImagerie TV
+            </div>
+
+            <h1>
+                Votre église.<br>
+                Votre <span>image.</span>
+            </h1>
+
+            <p>
+                Imagerie au service du Seigneur
+            </p>
+
+            <a
+                class="button button-youtube"
+                href="https://www.youtube.com/live/Nuot3bIaD2U"
+                target="_blank">
+                🔴 REGARDER LE DIRECT
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- DIRECT -->
+
+    <section id="direct">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <h2>🔴 Direct</h2>
+
+                <p>
+                    Notre direct est disponible sur YouTube
+                </p>
+
+            </div>
+
+            <div class="direct-box">
+
+                <div class="youtube-live">
+
+                    <div class="youtube-preview">
+
+                        <div class="youtube-icon">
+                            ▶
+                        </div>
+
+                        <h3>
+                            TcfImagerie TV
+                        </h3>
+
+                        <p>
+                            Notre direct est disponible sur YouTube
+                        </p>
+
+                        <a
+                            class="watch-button"
+                            href="https://www.youtube.com/live/Nuot3bIaD2U"
+                            target="_blank">
+                            🔴 REGARDER LE DIRECT
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PROGRAMMES -->
+
+    <section id="programmes">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <h2>📅 Programmes</h2>
+
+                <p>
+                    Retrouvez les différents programmes de l'église
+                </p>
+
+            </div>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <div class="card-icon">⛪</div>
+
+                    <div class="time">
+                        Dimanche — 09h00
+                    </div>
+
+                    <h3>
+                        Culte dominical
+                    </h3>
+
+                    <p>
+                        Célébration et prédication en direct.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">📖</div>
+
+                    <div class="time">
+                        Mercredi — 17h00
+                    </div>
+
+                    <h3>
+                        Enseignement biblique
+                    </h3>
+
+                    <p>
+                        Temps d'étude et d'approfondissement de la Parole.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">🙏</div>
+
+                    <div class="time">
+                        Samedi — 15h00
+                    </div>
+
+                    <h3>
+                        Programme spécial
+                    </h3>
+
+                    <p>
+                        Retrouvez les activités spéciales de l'église.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ENSEIGNEMENTS -->
+
+    <section id="enseignements">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <h2>🎓 Enseignements</h2>
+
+                <p>
+                    Grandir dans la connaissance de la Parole de Dieu
+                </p>
+
+            </div>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <div class="card-icon">📖</div>
+
+                    <h3>
+                        Études bibliques
+                    </h3>
+
+                    <p>
+                        Découvrez des enseignements pour approfondir votre foi.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">🎥</div>
+
+                    <h3>
+                        Prédications
+                    </h3>
+
+                    <p>
+                        Retrouvez les messages et prédications de l'église.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">🙏</div>
+
+                    <h3>
+                        Vie spirituelle
+                    </h3>
+
+                    <p>
+                        Des ressources pour votre croissance spirituelle.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ANNONCES -->
+
+    <section id="annonces">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <h2>📢 Annonces</h2>
+
+                <p>
+                    Les informations importantes de l'église
+                </p>
+
+            </div>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <div class="card-icon">📢</div>
+
+                    <h3>
+                        Informations
+                    </h3>
+
+                    <p>
+                        Les annonces importantes seront publiées ici.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">📅</div>
+
+                    <h3>
+                        Événements
+                    </h3>
+
+                    <p>
+                        Retrouvez les dates des prochains événements.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">🔴</div>
+
+                    <h3>
+                        Prochain direct
+                    </h3>
+
+                    <p>
+                        Consultez régulièrement cette application pour connaître les prochains directs.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- A PROPOS -->
+
+    <section class="about" id="apropos">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <h2>ℹ️ À propos</h2>
+
+            </div>
+
+            <div class="about-content">
+
+                <p>
+                    <strong>TcfImagerie TV</strong> est la plateforme audiovisuelle
+                    du Tabernacle chrétien de Fungurume.
+                </p>
+
+                <p>
+                    Notre mission est de mettre l'imagerie et les nouvelles technologies
+                    au service de la diffusion de la Parole de Dieu.
+                </p>
+
+                <p>
+                    <strong>Imagerie au service du Seigneur.</strong>
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+
+    <section id="contact">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <h2>📞 Contact</h2>
+
+                <p>
+                    Pour toute information, contactez l'équipe TcfImagerie.
+                </p>
+
+            </div>
+
+            <div class="contact-box">
+
+                <p>
+                    <strong>TcfImagerie TV</strong>
+                </p>
+
+                <p>
+                    Tabernacle chrétien de Fungurume
+                </p>
+
+                <p>
+                    Département de l'imagerie
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PIED DE PAGE -->
+
+    <footer>
+
+        <p>
+            © 2026 <strong>TcfImagerie TV</strong>
+        </p>
+
+        <p>
+            Imagerie au service du Seigneur
+        </p>
+
+    </footer>
+
+
+    <!-- SERVICE WORKER -->
+
+    <script>
+
+        if ('serviceWorker' in navigator) {
+
+            window.addEventListener('load', function () {
+
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(function () {
+                        console.log('TcfImagerie TV : application prête.');
+                    })
+                    .catch(function (error) {
+                        console.log('Service Worker non disponible :', error);
+                    });
+
+            });
+
+        }
+
+    </script>
+
+</body>
+</html>
